@@ -1,0 +1,41 @@
+
+{% block content %}
+<div class="container mt-5">
+    <div class="card shadow-lg">
+        <div class="card-header bg-success text-white">
+            <h2 class="text-center">
+                <i class="fas fa-check-circle me-2"></i>Demande enregistrée
+            </h2>
+        </div>
+        <div class="card-body p-4 text-center">
+            <div class="mb-4">
+                <i class="fas fa-envelope-open-text fa-4x text-primary"></i>
+            </div>
+            
+            <h3 class="mb-3">Merci pour votre inscription !</h3>
+            
+            
+            <p class="lead">
+                Votre inscription à la coopérative a bien été reçue.
+            </p>
+            <div class="alert alert-info mt-4">
+                <h4 class="alert-heading">Prochaines étapes</h4>
+                <ul class="list-unstyled mb-0">
+                    <li><i class="fas fa-clock me-2"></i>Vous êtes maintenant inscrite</li>
+                    <li><i class="fas fa-envelope me-2"></i>Vous pouvez donc vous connecter a votre interface</li>
+                    <li><i class="fas fa-user-check me-2"></i>Vous pouvez aussi consulter votre profil</li>
+
+                </ul>
+            </div>
+            <a href="# ">
+                <button type="button" class="btn btn-primary btn-lg mt-4">
+                    <i class="fas fa-user-check me-2"></i>Consulter mon profil
+                </button>
+            </a>
+            <a href="#" class="btn btn-secondary mt-4">
+                <i class="fas fa-home me-2"></i>Retour
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

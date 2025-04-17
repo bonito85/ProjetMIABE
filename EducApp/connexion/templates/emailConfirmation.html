@@ -1,0 +1,11 @@
+{% autoescape off %}
+
+Bienvenue a EducApp
+
+Bienvenue {{ name }}
+
+Cliquer sur le lien pour la confirmation de votre inscription
+
+Lien de confirmation : http://{{domain}}{% url 'activate' uidb64=uid token=token %}
+
+{% endautoescape %}

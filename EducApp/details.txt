@@ -1,0 +1,5 @@
+# Fonctionnalitées de connexion utilisateur
+
+    = Accès au single page  (fait)
+    = Connexion via creation de compte ou gmail
+    = Envoie de notification de confirmation d'inscription
