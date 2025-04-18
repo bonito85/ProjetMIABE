@@ -1,41 +1,79 @@
-
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirmation d'inscription</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gradient-to-br from-green-50 to-blue-50 min-h-screen">
+    
 {% block content %}
-<div class="container mt-5">
-    <div class="card shadow-lg">
-        <div class="card-header bg-success text-white">
-            <h2 class="text-center">
-                <i class="fas fa-check-circle me-2"></i>Demande enregistrée
-            </h2>
-        </div>
-        <div class="card-body p-4 text-center">
-            <div class="mb-4">
-                <i class="fas fa-envelope-open-text fa-4x text-primary"></i>
+<div class="container mx-auto px-4 py-8 max-w-4xl">
+    <div class="bg-white rounded-2xl shadow-2xl overflow-hidden transition-all duration-300 hover:shadow-3xl">
+        <!-- En-tête -->
+        <div class="bg-gradient-to-r from-green-600 to-emerald-700 p-8">
+            <div class="flex flex-col items-center space-y-4">
+                <i class="fas fa-check-circle text-5xl text-white animate-bounce"></i>
+                <h2 class="text-3xl font-bold text-white text-center">
+                    Demande enregistrée avec succès !
+                </h2>
             </div>
-            
-            <h3 class="mb-3">Merci pour votre inscription !</h3>
-            
-            
-            <p class="lead">
-                Votre inscription à la coopérative a bien été reçue.
-            </p>
-            <div class="alert alert-info mt-4">
-                <h4 class="alert-heading">Prochaines étapes</h4>
-                <ul class="list-unstyled mb-0">
-                    <li><i class="fas fa-clock me-2"></i>Vous êtes maintenant inscrite</li>
-                    <li><i class="fas fa-envelope me-2"></i>Vous pouvez donc vous connecter a votre interface</li>
-                    <li><i class="fas fa-user-check me-2"></i>Vous pouvez aussi consulter votre profil</li>
+        </div>
 
+        <!-- Corps -->
+        <div class="p-8 space-y-6">
+            <div class="flex justify-center">
+                <i class="fas fa-envelope-open-text text-6xl text-blue-500 animate-pulse"></i>
+            </div>
+
+            <h3 class="text-2xl font-semibold text-center text-gray-800">
+                Merci pour votre inscription ! 🎉
+            </h3>
+
+            <p class="text-lg text-gray-600 text-center leading-relaxed">
+                Votre inscription a été enregistrée avec succès. Un e-mail de confirmation a été envoyé à l'adresse que vous avez fournie. Veuillez vérifier votre boîte de réception pour confirmer votre compte.
+                <br>
+                Si vous ne trouvez pas l'e-mail, pensez à vérifier votre dossier de spam ou de courrier indésirable.
+                <br>
+            </p>
+
+            <!-- Étapes -->
+            <div class="bg-blue-50 rounded-xl p-6 border-l-4 border-blue-500">
+                <h4 class="text-xl font-semibold text-blue-800 mb-4">
+                    <i class="fas fa-road mr-2"></i>Prochaines étapes
+                </h4>
+                <ul class="space-y-3">
+                    <li class="flex items-center">
+                        <i class="fas fa-clock text-blue-500 w-6"></i>
+                        <span class="text-gray-700">Inscription validée</span>
+                    </li>
+                    <li class="flex items-center">
+                        <i class="fas fa-sign-in-alt text-blue-500 w-6"></i>
+                        <span class="text-gray-700">Accès à votre espace membre</span>
+                    </li>
+                    <li class="flex items-center">
+                        <i class="fas fa-user-edit text-blue-500 w-6"></i>
+                        <span class="text-gray-700">Personnalisation du profil</span>
+                    </li>
                 </ul>
             </div>
-            <a href="# ">
-                <button type="button" class="btn btn-primary btn-lg mt-4">
-                    <i class="fas fa-user-check me-2"></i>Consulter mon profil
-                </button>
-            </a>
-            <a href="#" class="btn btn-secondary mt-4">
-                <i class="fas fa-home me-2"></i>Retour
-            </a>
+
+            <!-- Boutons -->
+            <div class="flex flex-col sm:flex-row justify-center gap-4 pt-6">
+                <a href="https://mail.google.com/" class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg">
+                    <i class="fas fa-user-cog mr-2"></i>Voir mon mail
+                </a>
+                
+                <a href="{% url  'index' %}" class="bg-gray-600 hover:bg-gray-700 text-white px-8 py-4 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg">
+                    <i class="fas fa-home mr-2"></i>Retour à l'accueil
+                </a>
+            </div>
         </div>
     </div>
 </div>
 {% endblock %}
+
+</body>
+</html>

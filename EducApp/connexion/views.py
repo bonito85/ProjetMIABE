@@ -109,6 +109,7 @@ def signup(request):
                 [email],
             )
             email.fail_silently = False
+            email.content_subtype = "html" 
             email.send()
             messages.add_message(request, messages.SUCCESS, 'Un email de confirmation a été envoyé à votre adresse email. Veuillez le confirmer pour vous connecter.')
         except Exception as e:
