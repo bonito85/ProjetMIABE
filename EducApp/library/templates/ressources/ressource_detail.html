@@ -3,85 +3,217 @@
 {% block title %}{{ ressource.title }} - BiblioRessources{% endblock %}
 
 {% block content %}
-<nav aria-label="breadcrumb" class="mb-4">
-    <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="#">Accueil</a></li>
-        <li class="breadcrumb-item"><a href="#">Ressources</a></li>
-        <li class="breadcrumb-item active" aria-current="page">{{ ressource.title }}</li>
+<nav aria-label="breadcrumb" class="mb-4 bg-light rounded-3 p-3 shadow-sm">
+    <ol class="breadcrumb mb-0">
+        <li class="breadcrumb-item"><a href="{%url 'library:home' %}" class="text-decoration-none">Accueil</a></li>
+        <li class="breadcrumb-item"><a href="#" class="text-decoration-none">Ressources</a></li>
+        <li class="breadcrumb-item active" aria-current="page">{{ ressource.title|truncatechars:30 }}</li>
     </ol>
 </nav>
 
-<div class="row">
+<div class="row g-4">
     <!-- Colonne image et infos -->
-    <div class="col-md-4 mb-4">
-        <div class="card shadow-sm">
-            <img src="{% if ressource.image %}{{ ressource.image.url }}{% else %}/static/images/default-thumbnail.jpeg{% endif %}" 
-                 alt="{{ ressource.title }}" class="card-img-top" style="object-fit: cover; height: 250px;">
+    <div class="col-lg-4">
+        <div class="card shadow-lg-hover h-100 transition-all">
+            <div class="position-relative">
+                <img src="{% if ressource.image %}{{ ressource.image.url }}{% else %}/static/images/default-thumbnail.jpeg{% endif %}" 
+                     alt="{{ ressource.title }}" 
+                     class="card-img-top object-fit-cover"
+                     style="height: 300px;">
+                <div class="card-img-overlay d-flex flex-column justify-content-end bg-gradient-overlay">
+                    <h2 class="h4 text-white mb-0">{{ ressource.title }}</h2>
+                </div>
+            </div>
+            
             <div class="card-body">
-                <h5 class="card-title">Informations</h5>
-                <ul class="list-group list-group-flush">
-                    <li class="list-group-item"><strong>Type:</strong> {{ ressource.get_ressource_type_display }}</li>
-                    <li class="list-group-item"><strong>Auteur:</strong> {{ ressource.author }}</li>
-                    <li class="list-group-item"><strong>Publié le:</strong> {{ ressource.publication_date|date:"d/m/Y" }}</li>
-                    <li class="list-group-item">
-                        <strong>Catégories:</strong><br>
-                        {% for category in ressource.categories.all %}
-                        <span class="badge bg-light text-primary border border-primary me-1">{{ category.name }}</span>
-                        {% empty %}
-                        <span class="text-muted">Aucune</span>
-                        {% endfor %}
-                    </li>
-                </ul>
+                <div class="d-flex flex-column gap-3">
+                    <!-- Métadonnées -->
+                    <div class="d-flex gap-2 align-items-center text-muted">
+                        <i class="bi bi-calendar-event"></i>
+                        <span>{{ ressource.publication_date|date:"d/m/Y" }}</span>
+                    </div>
+                    
+                    <div class="d-flex gap-2 align-items-center text-muted">
+                        <i class="bi bi-person-circle"></i>
+                        <span>{{ ressource.author|default:"Auteur inconnu" }}</span>
+                    </div>
+                    
+                    <!-- Badge Type -->
+                    <div class="mt-2">
+                        <span class="badge bg-primary-soft text-primary rounded-pill">
+                            {{ ressource.get_ressource_type_display }}
+                        </span>
+                    </div>
+                </div>
+
+                <hr class="my-4">
+
+                <!-- Catégories -->
+                <h5 class="h6 text-uppercase fw-bold text-muted mb-3">Catégories</h5>
+                <div class="d-flex flex-wrap gap-2">
+                    {% for category in ressource.categories.all %}
+                    <a href="#" class="badge bg-light text-dark border rounded-pill px-3 py-2 text-decoration-none hover-scale">
+                        {{ category.name }}
+                    </a>
+                    {% empty %}
+                    <span class="text-muted">Aucune catégorie</span>
+                    {% endfor %}
+                </div>
             </div>
         </div>
     </div>
 
     <!-- Colonne contenu -->
-    <div class="col-md-8">
-        <h1 class="mb-3 fw-bold">{{ ressource.title }}</h1>
-
-        <div class="mb-4 d-flex align-items-center gap-3">
-            <span class="badge bg-primary">{{ ressource.get_ressource_type_display }}</span>
-            <small class="text-muted">Ajouté le {{ ressource.created_at|date:"d/m/Y" }}</small>
+    <div class="col-lg-8">
+        <!-- En-tête -->
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-start gap-3 mb-5">
+            <div>
+                <h1 class="display-6 fw-bold mb-3">{{ ressource.title }}</h1>
+                <div class="d-flex align-items-center gap-3 text-muted">
+                    <div class="d-flex align-items-center gap-1">
+                        <i class="bi bi-clock-history"></i>
+                        <small>Mise à jour : {{ ressource.updated_at|date:"d/m/Y" }}</small>
+                    </div>
+                    <div class="d-flex align-items-center gap-1">
+                        <i class="bi bi-eye"></i>
+                        <small>245 vues</small>
+                    </div>
+                </div>
+            </div>
+            {% if ressource.file or ressource.url %}
+            <div class="d-flex gap-2">
+                {% if ressource.file %}
+                <a href="{{ ressource.file.url }}" 
+                   class="btn btn-primary rounded-pill px-4 py-2 hover-lift"
+                   download>
+                    <i class="bi bi-download me-2"></i>Télécharger
+                </a>
+                {% endif %}
+                {% if ressource.url %}
+                <a href="{{ ressource.url }}" 
+                   class="btn btn-outline-primary rounded-pill px-4 py-2 hover-lift"
+                   target="_blank">
+                    <i class="bi bi-box-arrow-up-right me-2"></i>Visiter
+                </a>
+                {% endif %}
+            </div>
+            {% endif %}
         </div>
 
         <!-- Description -->
-        <div class="card mb-4 shadow-sm">
-            <div class="card-header bg-white">
-                <h5 class="mb-0">Description</h5>
+        <article class="card border-0 shadow-sm mb-5">
+            <div class="card-header bg-transparent border-0 py-3">
+                <h2 class="h5 fw-bold mb-0"><i class="bi bi-file-text me-2"></i>Description</h2>
             </div>
-            <div class="card-body">
-                <p class="mb-0">{{ ressource.description|linebreaks }}</p>
-            </div>
-        </div>
-
-        <!-- Fichier -->
-        {% if ressource.file %}
-            <div class="card mb-4 shadow-sm">
-                <div class="card-header bg-white">
-                    <h5 class="mb-0">Fichier à télécharger</h5>
-                </div>
-                <div class="card-body">
-                    <a href="{{ ressource.file.url }}" class="btn btn-primary" download>
-                        <i class="bi bi-download me-2"></i> Télécharger le fichier
-                    </a>
+            <div class="card-body pt-0">
+                <div class="prose-content">
+                    {{ ressource.description|linebreaks }}
                 </div>
             </div>
-        {% endif %}
+        </article>
 
-        <!-- Lien externe -->
-        {% if ressource.url %}
-        <div class="card mb-4 shadow-sm">
-            <div class="card-header bg-white">
-                <h5 class="mb-0">Lien externe</h5>
+        <!-- Informations complémentaires -->
+        <div class="row g-4">
+            <!-- Métadonnées techniques -->
+            {% if ressource.file %}
+            <div class="col-md-6">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body">
+                        <h3 class="h6 fw-bold text-muted mb-3">
+                            <i class="bi bi-info-circle me-2"></i>Informations techniques
+                        </h3>
+                        <ul class="list-unstyled mb-0">
+                            <li class="d-flex justify-content-between py-2">
+                                <span>Format :</span>
+                                <span class="text-muted">{{ ressource.file.url|slice:"-3:"|upper }}</span>
+                            </li>
+                            <li class="d-flex justify-content-between py-2 border-top">
+                                <span>Taille :</span>
+                                <span class="text-muted">{{ ressource.file.size|filesizeformat }}</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
             </div>
-            <div class="card-body">
-                <a href="{{ ressource.url }}" class="btn btn-outline-primary" target="_blank">
-                    <i class="bi bi-box-arrow-up-right me-2"></i> Accéder à la ressource
-                </a>
+            {% endif %}
+
+            <!-- Partage -->
+            <div class="col-md-6">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body">
+                        <h3 class="h6 fw-bold text-muted mb-3">
+                            <i class="bi bi-share me-2"></i>Partager
+                        </h3>
+                        <div class="d-flex gap-2">
+                            <a href="#" class="btn btn-icon btn-outline-secondary rounded-circle hover-lift">
+                                <i class="bi bi-facebook"></i>
+                            </a>
+                            <a href="#" class="btn btn-icon btn-outline-secondary rounded-circle hover-lift">
+                                <i class="bi bi-twitter"></i>
+                            </a>
+                            <a href="#" class="btn btn-icon btn-outline-secondary rounded-circle hover-lift">
+                                <i class="bi bi-link-45deg"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-        {% endif %}
     </div>
 </div>
+
+<style>
+    .bg-gradient-overlay {
+        background: linear-gradient(180deg, rgba(0,0,0,0) 40%, rgba(0,0,0,0.7) 100%);
+    }
+    
+    .hover-scale {
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    
+    .hover-scale:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    
+    .prose-content {
+        line-height: 1.7;
+        color: #444;
+    }
+    
+    .prose-content p:last-child {
+        margin-bottom: 0;
+    }
+    
+    .object-fit-cover {
+        object-fit: cover;
+        object-position: center;
+    }
+    
+    .transition-all {
+        transition: all 0.3s ease;
+    }
+    
+    .shadow-lg-hover:hover {
+        box-shadow: 0 1rem 3rem rgba(0,0,0,0.1) !important;
+    }
+    
+    .hover-lift {
+        transition: transform 0.2s ease;
+    }
+    
+    .hover-lift:hover {
+        transform: translateY(-2px);
+    }
+    
+    @media (max-width: 768px) {
+        .display-6 {
+            font-size: 1.75rem;
+        }
+        
+        .card-img-top {
+            height: 200px !important;
+        }
+    }
+</style>
 {% endblock %}

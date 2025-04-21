@@ -1,0 +1,82 @@
+{% extends 'library/base.html' %}
+
+{% block title %}{{ category.name }} - BiblioRessources{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <!-- Fil d'Ariane amélioré -->
+    <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb bg-light p-3 rounded-3">
+            <li class="breadcrumb-item"><a href="{% url 'library:home' %}" class="text-decoration-none"><i class="fas fa-home"></i> Accueil</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'library:category_list' %}" class="text-decoration-none"><i class="fas fa-folder-open"></i> Catégories</a></li>
+            <li class="breadcrumb-item active text-primary fw-bold">{{ category.name }}</li>
+        </ol>
+    </nav>
+
+    <!-- En-tête de catégorie -->
+    <div class="card border-0 shadow-lg mb-5">
+        <div class="card-body p-4">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <h1 class="display-5 fw-bold mb-3 text-primary">{{ category.name }}</h1>
+                    {% if category.description %}
+                    <p class="lead text-muted mb-0">{{ category.description }}</p>
+                    {% endif %}
+                </div>
+                <div class="col-md-4 text-end">
+                    <div class="bg-primary text-white p-3 rounded-3">
+                        <h4 class="mb-0"><i class="fas fa-book-open"></i> {{ ressources|length }} Ressources</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Liste des ressources -->
+    <div class="row g-4">
+        {% for ressource in ressources %}
+        <div class="col-lg-4 col-md-6">
+            <div class="card h-100 border-0 shadow-hover">
+                <div class="position-relative">
+                    <img src="{% if ressource.image %}{{ ressource.image.url }}{% else %}/static/images/default-thumbnail.jpeg{% endif %}" 
+                         alt="{{ ressource.title }}" 
+                         class="card-img-top object-fit-cover"
+                         style="height: 250px;">
+                    <span class="position-absolute top-0 end-0 m-3 badge bg-primary bg-opacity-90 fs-6">
+                        <i class="fas fa-tag me-2"></i>{{ ressource.get_resource_type_display }}
+                    </span>
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title fw-bold mb-3">{{ ressource.title }}</h5>
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="me-3">
+                            <i class="fas fa-user text-primary"></i>
+                            <span class="text-muted ms-1">{{ ressource.author }}</span>
+                        </div>
+                        <div class="vr"></div>
+                        <div class="ms-3">
+                            <i class="fas fa-calendar text-primary"></i>
+                            <span class="text-muted ms-1">{{ ressource.publication_date|date:"d/m/Y" }}</span>
+                        </div>
+                    </div>
+                    <p class="card-text text-muted mb-4">{{ ressource.description|truncatewords:25 }}</p>
+                    <a href="{% url 'library:ressource_detail' ressource.pk %}" 
+                       class="btn btn-primary stretched-link">
+                        <i class="fas fa-arrow-right me-2"></i>Consulter
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12">
+            <div class="text-center">
+                <i class="fas fa-exclamation-circle fa-3x text-muted mb-3"></i>
+                <h5 class="fw-bold">Aucune ressource disponible</h5>
+                <p class="text-muted
+                     mb-0">Il n'y a actuellement aucune ressource disponible dans cette catégorie.</p>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
+{% endblock %}

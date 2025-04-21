@@ -1,0 +1,33 @@
+{% extends 'library/base.html' %}
+
+{% block title %}Catégories - Bibliotheque-Numerique{% endblock %}
+
+{% block content %}
+
+<div class="row">
+    {% for category in categories %}
+    <div class="col-md-4 mb-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5 class="card-title">{{ category.name }}</h5>
+                {% if category.description %}
+                <p class="card-text">{{ category.description|truncatewords:30 }}</p>
+                {% else %}
+                <p class="card-text text-muted">Aucune description disponible.</p>
+                {% endif %}
+                
+                <p class="text-muted">
+                    <i class="fas fa-book me-1"></i> {{ category.resources.count }} ressource(s)
+                </p>
+            </div>
+            <div class="card-footer bg-white">
+                <a href="{% url 'library:category_detail' category.pk %}" class="btn btn-outline-primary">Voir les ressources</a>
+                
+                
+            </div>
+        </div>
+        
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
